@@ -1,9 +1,11 @@
 <html>
     <head>
+        <script src="https://cdn.jsdelivr.net/npm/idb-keyval@3/dist/idb-keyval-iife.min.js"></script>
     </head>
     <body>
         <button id="worker">Turn on Service Worker</button>
         <br><input disabled id="website" placeholder="Enter the name of the website">
+        <br>Keep in mind that you can only have one active site at a time.
         <script>
             var hasworker = false;
             var update = function() {
@@ -25,11 +27,18 @@
                 if (hasworker) {
                     navigator.serviceWorker.getRegistrations().then(e=>e[0].unregister()).then(update);
                 } else {
-                    navigator.serviceWorker.register('cdndexworker.js',{scope:'proxiy/'}).then(update);
+                    navigator.serviceWorker.register('cdndexworker.js').then(update);
                 }
                 worker.disabled = true;
             });
-            website.addEventListener('keydown',e=>e.keyCode==13&&console.log(location.href='proxiy/'+website.value));
+            website.addEventListener('keydown',e=>{
+                if (e.keyCode==13) {
+                    var url = new URL(website.value);
+                    idbKeyval.set('fake',location.origin).then(()=>idbKeyval.set('real','https://cors-anywhere.herokuapp.com/'+url.origin)).then(()=>{
+                        window.open(location.origin+url.pathname);
+                    });
+                }
+            });
             update();
         </script>
     </body>
