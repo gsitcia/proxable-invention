@@ -1,0 +1,36 @@
+<html>
+    <head>
+    </head>
+    <body>
+        <button id="worker">Turn on Service Worker</button>
+        <br><input disabled id="website" placeholder="Enter the name of the website">
+        <script>
+            var hasworker = false;
+            var update = function() {
+                navigator.serviceWorker.getRegistrations().then(e=>{
+                    if (e.length) {
+                        worker.innerText = 'Turn off Service Worker';
+                        website.disabled = false;
+                        worker.disabled = false;
+                        hasworker = true;
+                    } else {
+                        worker.innerText = 'Turn on Service Worker';
+                        website.disabled = true;
+                        worker.disabled = false;
+                        hasworker = false;
+                    }
+                });
+            }
+            worker.addEventListener('click',()=>{
+                if (hasworker) {
+                    navigator.serviceWorker.getRegistrations().then(e=>e[0].unregister()).then(update);
+                } else {
+                    navigator.serviceWorker.register('cdndexworker.js',{scope:'proxiy/'}).then(update);
+                }
+                worker.disabled = true;
+            });
+            website.addEventListener('keydown',e=>e.keyCode==13&&console.log(location.href='proxiy/'+website.value));
+            update();
+        </script>
+    </body>
+</html>
