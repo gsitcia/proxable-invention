@@ -22,6 +22,6 @@ self.addEventListener('fetch',function(event) {
             }
             return fetch(real+url.pathname+url.search);
         }
-        return fetch('https://cors-anywhere.herokuapp.com/'+url.href);
+        return fetch('https://proxable.herokuapp.com/'+url.href);
     })));
 });
