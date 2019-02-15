@@ -34,7 +34,7 @@
             website.addEventListener('keydown',e=>{
                 if (e.keyCode==13) {
                     var url = new URL(website.value);
-                    idbKeyval.set('fake',location.origin).then(()=>idbKeyval.set('real','https://cors-anywhere.herokuapp.com/'+url.origin)).then(()=>{
+                    idbKeyval.set('fake',location.origin).then(()=>idbKeyval.set('real','https://proxable.herokuapp.com/'+url.origin)).then(()=>{
                         window.open(location.origin+url.pathname);
                     });
                 }
